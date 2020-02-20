@@ -6,8 +6,8 @@ from flask_jwt import JWT
 # Importing from security, which itself imports from
 # our user class file
 from security import authenticate, identity
-from user import UserRegister
-from item import Item, ItemList
+from resources.user import UserRegister
+from resources.item import Item, ItemList
 
 # Set up
 app = Flask(__name__)

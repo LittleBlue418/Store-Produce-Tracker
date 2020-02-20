@@ -2,7 +2,7 @@
 # we created in user.py we can import directly as the files
 # are in the same folder
 from werkzeug.security import safe_str_cmp
-from user import User
+from resources.user import User
 
 # Identifying the user by comparing the username and
 # password they enter to the user in the database
