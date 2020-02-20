@@ -2,14 +2,14 @@
 # we created in user.py we can import directly as the files
 # are in the same folder
 from werkzeug.security import safe_str_cmp
-from resources.user import User
+from models.user import UserModel
 
 # Identifying the user by comparing the username and
 # password they enter to the user in the database
 # (using the User class method)
 # Returing the user, fed to JWT to make the token
 def authenticate(username, password):
-    user = User.find_by_username(username)
+    user = UserModel.find_by_username(username)
     if user and safe_str_cmp(user.password, password):
         return user
 
@@ -20,4 +20,4 @@ def authenticate(username, password):
 # If match then we know user is authenticated
 def identity(payload):
     user_id = payload['identity']
-    return User.find_by_id(user_id)
+    return UserModel.find_by_id(user_id)
