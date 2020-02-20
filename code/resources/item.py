@@ -42,7 +42,7 @@ class Item(Resource):
         except:
             return {"message": "An error occurred"}, 500
 
-        return item, 201
+        return item.json(), 201
 
 
 
