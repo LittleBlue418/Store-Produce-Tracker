@@ -28,6 +28,12 @@ jwt = JWT(app, authenticate, identity)
 db.init_app(app)
 
 
+# Creating the tables in our data.db file (runs once)
+@app.before_first_request
+def create_tables():
+    db.create_all()
+
+
 # Initializing our API end points.
 api.add_resource(Item, '/item/<string:name>')
 api.add_resource(ItemList, '/items')
