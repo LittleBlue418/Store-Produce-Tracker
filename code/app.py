@@ -14,9 +14,11 @@ from resources.item import Item, ItemList
 app = Flask(__name__)
 app.secret_key = 'key'
 api = Api(app)
-db.init_app(app)
+
 jwt = JWT(app, authenticate, identity)
 
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db.init_app(app)
 
 # Initializing and establishing our end points. Note that we group
 # end points by class, so because the post and put etc target a
