@@ -38,7 +38,7 @@ class Item(Resource):
 
         # To capture if there has been an error posting for whatever reason
         try:
-            item.insert()
+            item.save_to_db()
         except:
             return {"message": "An error occurred"}, 500
 
@@ -47,37 +47,24 @@ class Item(Resource):
 
 
     def delete(self, name):
-        connection = sqlite3.connect('data.db')
-        cursor = connection.cursor()
-
-        # NB: without the 'WHERE name=?' specifying it would delete the whole table...
-        query = "DELETE FROM items WHERE name=?"
-        cursor.execute(query, (name,))
-
-        connection.commit()
-        connection.close()
-
-        return {'message': 'Item deleted'}
+        item = ItemModel.find_by_name(name)
+        if item:
+            item.delete_from_db()
 
 
     def put(self, name):
         request_data = Item.parser.parse_args()
 
         item = ItemModel.find_by_name(name)
-        updated_item = ItemModel(name, request_data['price'])
 
-        # Using try / except will give our users nice friendly error messages
         if item is None:
-            try:
-                updated_item.insert()
-            except:
-                return {"message": "An error occured inserting the item"}, 500 # always use the correct code!
+            item = ItemModel(name, request_data['price'])
         else:
-            try:
-                updated_item.update()
-            except:
-                return {"message": "An error occured updating the item"}, 500
-        return updated_item.json()
+            item.price = request_data['price']
+
+        item.save_to_db()
+
+        return item.json()
 
 
 
