@@ -12,12 +12,14 @@ from resources.item import Item, ItemList
 
 # Set up
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = 'key'
 api = Api(app)
 
 jwt = JWT(app, authenticate, identity)
 
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 db.init_app(app)
 
 # Initializing and establishing our end points. Note that we group
