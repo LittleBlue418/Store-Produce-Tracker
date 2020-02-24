@@ -2,30 +2,33 @@
 from flask import Flask
 from flask_restful import Api
 from flask_jwt import JWT
-from db import db
 
-# Importing from security, which itself imports from
-# our user class file
+# Importing our security
 from security import authenticate, identity
+
+# Importing from within the project
+from db import db
 from resources.user import UserRegister
 from resources.item import Item, ItemList
 
-# Set up
+
+# Set up our Flask app
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = 'key'
+
+# Set up our API
 api = Api(app)
 
+# Set up our JavaScript Web Token
 jwt = JWT(app, authenticate, identity)
 
-
+# Initializing our SQLAlchemy database
 db.init_app(app)
 
-# Initializing and establishing our end points. Note that we group
-# end points by class, so because the post and put etc target a
-# single item we can put them in a single class, but because get
-# items has a different end point it has it's own class
+
+# Initializing our API end points.
 api.add_resource(Item, '/item/<string:name>')
 api.add_resource(ItemList, '/items')
 api.add_resource(UserRegister, '/register')
