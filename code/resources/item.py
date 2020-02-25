@@ -54,6 +54,7 @@ class Item(Resource):
         item = ItemModel.find_by_name(name)
         if item:
             item.delete_from_db()
+        return {"message": "Item deleted"}
 
 
     def put(self, name):
