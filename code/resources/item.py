@@ -14,6 +14,11 @@ class Item(Resource):
         required=True,
         help="This field cannot be left blank!"
     )
+    parser.add_argument('store_id',
+        type=int,
+        required=True,
+        help="Every item needs a store id"
+    )
 
     # This method has the JavaScript Web Token required decorator, the user
     # must be authenticated and have an auth key to do anything with it.
@@ -33,7 +38,7 @@ class Item(Resource):
 
         request_data = Item.parser.parse_args()
 
-        item = ItemModel(name, request_data['price'])
+        item = ItemModel(name, request_data['price'], request_data['store_id'])
 
         # To capture if there has been an error posting for whatever reason
         try:
@@ -57,9 +62,10 @@ class Item(Resource):
         item = ItemModel.find_by_name(name)
 
         if item is None:
-            item = ItemModel(name, request_data['price'])
+            item = ItemModel(name, request_data['price'], request_data['store_id'])
         else:
             item.price = request_data['price']
+            item.store_id = request_data['store_id']
 
         item.save_to_db()
 
