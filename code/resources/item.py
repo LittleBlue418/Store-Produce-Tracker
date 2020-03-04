@@ -38,7 +38,7 @@ class Item(Resource):
 
         request_data = Item.parser.parse_args()
 
-        item = ItemModel(name, request_data['price'], request_data['store_id'])
+        item = ItemModel(name, **request_data)
 
         # To capture if there has been an error posting for whatever reason
         try:
@@ -63,7 +63,7 @@ class Item(Resource):
         item = ItemModel.find_by_name(name)
 
         if item is None:
-            item = ItemModel(name, request_data['price'], request_data['store_id'])
+            item = ItemModel(name, **request_data)
         else:
             item.price = request_data['price']
             item.store_id = request_data['store_id']
