@@ -10,7 +10,7 @@ from security import authenticate, identity
 
 # Importing from within the project
 from db import db
-from resources.user import UserRegister
+from resources.user import UserRegister, User
 from resources.item import Item, ItemList
 from resources.store import Store, StoreList
 
@@ -44,6 +44,7 @@ api.add_resource(Store, '/store/<string:name>')
 api.add_resource(ItemList, '/items')
 api.add_resource(StoreList, '/stores')
 api.add_resource(UserRegister, '/register')
+api.add_resource(User, '/user/<int:user_id>')
 
 
 # If this code is running in the main file (not via imported)
