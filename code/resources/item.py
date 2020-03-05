@@ -77,5 +77,5 @@ class Item(Resource):
 # A seporate class with a seporate end point to get all of the items.
 class ItemList(Resource):
     def get(self):
-        return {'items': [item.json() for item in ItemModel.query.all()]}
+        return {'items': [item.json() for item in ItemModel.find_all()]}
         # OR return {'items': list(map(lambda x: x.json(), ItemModel.query.all()))}

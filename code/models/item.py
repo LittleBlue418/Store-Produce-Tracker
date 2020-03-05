@@ -29,6 +29,10 @@ class ItemModel(db.Model):
             # SELECT * FROM items WHERE name=argument, give us the first
             # returns an item model object
 
+    @classmethod
+    def find_all(cls):
+        return cls.query.all()
+
     # Hnadles both update and add
     def save_to_db(self):
         db.session.add(self)
