@@ -3,14 +3,11 @@ import os
 # Importing from flask and flask libraries
 from flask import Flask
 from flask_restful import Api
-from flask_jwt import JWT
-
-# Importing our security
-from security import authenticate, identity
+from flask_jwt_extended import JWTManager
 
 # Importing from within the project
 from db import db
-from resources.user import UserRegister, User
+from resources.user import UserRegister, User, UserLogin
 from resources.item import Item, ItemList
 from resources.store import Store, StoreList
 
@@ -26,7 +23,7 @@ app.secret_key = 'key'
 api = Api(app)
 
 # Set up our JavaScript Web Token
-jwt = JWT(app, authenticate, identity)
+jwt = JWTManager(app)
 
 # Initializing our SQLAlchemy database
 db.init_app(app)
@@ -45,6 +42,7 @@ api.add_resource(ItemList, '/items')
 api.add_resource(StoreList, '/stores')
 api.add_resource(UserRegister, '/register')
 api.add_resource(User, '/user/<int:user_id>')
+api.add_resource(UserLogin, '/login')
 
 
 # If this code is running in the main file (not via imported)
