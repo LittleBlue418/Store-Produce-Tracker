@@ -59,7 +59,7 @@ class UserLogin(Resource):
         user = UserModel.find_by_username(data['username'])
 
         # check password / create access and refresh token
-        if user and safe_str_cp(user.password, data['password']):
+        if user and safe_str_cmp(user.password, data['password']):
             # identity= is what the 'identity()' function used to do
             access_token = create_access_token(identity=user.id, fresh=True)
             refresh_token = create_refresh_token(user.id)
