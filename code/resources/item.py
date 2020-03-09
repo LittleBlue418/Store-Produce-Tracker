@@ -1,5 +1,11 @@
 from flask_restful import Resource, reqparse
-from flask_jwt_extended import jwt_required, get_jwt_claims, jwt_optional, get_jwt_identity
+from flask_jwt_extended import (
+    jwt_required,
+    get_jwt_claims,
+    jwt_optional,
+    get_jwt_identity,
+    fresh_jwt_required
+)
 from models.item import ItemModel
 
 
@@ -29,7 +35,7 @@ class Item(Resource):
             return item.json()
         return {'message': 'Item not found'}
 
-
+    @fresh_jwt_required
     def post(self, name):
         # 'error first' - we only run the rest of the code if there are no errors.
         #  This helps us move faster, we are not loaidng things we don't need.
