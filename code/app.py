@@ -10,6 +10,7 @@ from db import db
 from resources.user import UserRegister, User, UserLogin, TokenRefresh
 from resources.item import Item, ItemList
 from resources.store import Store, StoreList
+from blacklist import BLACKLIST
 
 
 # Set up our Flask app
@@ -17,6 +18,8 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///data.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['PROPAGATE_EXCEPTIONS'] = True
+app.config['JWT_BLACKLIST_ENABLED'] = True
+app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
 app.secret_key = 'key'
 
 # Set up our API
@@ -30,6 +33,10 @@ def add_claims_to_jwt(identity):
     if identity == 3: # 'user 3' used to match postman for testing
         return {'is_admin': True}
     return {'is_admin': False}
+
+@jwt.token_in_blacklist_loader
+def check_if_token_in_blacklist(decrypted_token):
+    return decrypted_token['identity'] in BLACKLIST
 
 
 # JWT config responses
