@@ -25,6 +25,12 @@ api = Api(app)
 # Set up our JavaScript Web Token
 jwt = JWTManager(app)
 
+@jwt.user_claims_loader
+def add_claims_to_jwt(identity):
+    if identity == 3: # 'user 3' used to match postman for testing
+        return {'is_admin': True}
+    return {'is_admin': False}
+
 # Initializing our SQLAlchemy database
 db.init_app(app)
 
